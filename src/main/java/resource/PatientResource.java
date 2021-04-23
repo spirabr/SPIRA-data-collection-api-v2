@@ -1,6 +1,8 @@
 package resource;
 
+import model.audio.AudioForm;
 import model.patient.Patient;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import repository.PatientRepository;
 
 import javax.enterprise.context.RequestScoped;
@@ -12,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
 
 @Path("/patient")
 @RequestScoped
@@ -42,6 +43,23 @@ public class PatientResource {
 
     }
 
+    @PUT
+    @Transactional
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Path("/audio/{hospital}/{rgh}")
+    public Response savePatientAudios(@Context Request request,
+                                      @MultipartForm AudioForm form,
+                                      @PathParam("hospital") String hospital,
+                                      @PathParam("rgh") String rgh) {
+        Patient patient = findPatient(rgh, hospital);
+        if (patient == null) {
+            return notFound();
+        }
+
+        //TODO: persist audios to disk and update DB
+        return Response.status(Response.Status.OK).build();
+    }
+
     @GET
     @Path("{hospital}/{rgh}")
     public Response getPatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
@@ -57,9 +75,7 @@ public class PatientResource {
     public Response deletePatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
         if (patient == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Patient not found")
-                    .build();
+            return notFound();
         }
         patient.delete();
         return Response.status(Response.Status.OK).build();
@@ -67,5 +83,11 @@ public class PatientResource {
 
     private Patient findPatient(String rgh, String hospital) {
         return service.find("{ 'collector.patientRgh' : ?1, 'collector.hospitalName' : ?2 } }", rgh, hospital).firstResult();
+    }
+
+    private Response notFound() {
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("Patient not found")
+                .build();
     }
 }
