@@ -6,15 +6,13 @@ import repository.PatientRepository;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/patient")
 @RequestScoped
@@ -42,5 +40,20 @@ public class PatientResource {
                     .build();
         }
 
+    }
+
+    @DELETE
+    @Transactional
+    @Path("{hospital}/{rgh}")
+    public Response deletePatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
+        Optional<Patient> optional = service.find("{ 'collector': { 'rgh' : ?1, 'hospital' : ?2 } }", rgh, hospital).firstResultOptional();
+        Patient patient = optional.orElse(null);
+        if (patient == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Patient not found")
+                    .build();
+        }
+        patient.delete();
+        return Response.status(Response.Status.ACCEPTED).build();
     }
 }

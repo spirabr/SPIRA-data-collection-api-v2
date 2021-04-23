@@ -1,6 +1,6 @@
 package model.patient;
 
-import org.bson.codecs.pojo.annotations.BsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.enterprise.inject.Model;
 import java.time.LocalDate;
@@ -8,10 +8,11 @@ import java.time.LocalDate;
 @Model
 public class CollectData {
 
-    @BsonProperty("rgh")
+    @JsonProperty("rgh")
     private String patientRgh;
 
-    @BsonProperty("hospital")
+    // TODO: Check for a better way to identify hospital (maybe create an id?)
+    @JsonProperty("hospital")
     private String hospitalName;
 
     private LocalDate collectionDate;

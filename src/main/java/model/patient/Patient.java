@@ -1,6 +1,8 @@
 package model.patient;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import model.SampleType;
@@ -11,6 +13,12 @@ import java.util.Map;
 @Model
 @MongoEntity(collection = "samples")
 public class Patient extends PanacheMongoEntity {
+
+    @JsonCreator
+    public Patient(@JsonProperty("collector") CollectData collector) {
+        this.collector = collector;
+        this.patientId = this.collector.getHospitalName() + "_" + this.collector.getPatientRgh();
+    }
 
     /**
      * Patient ID should be a combination of colletor RGH + hospital since RGH-only is not unique
