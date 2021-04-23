@@ -4,6 +4,8 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
+You can check out Quarkus guides and tutorials [here](https://quarkus.io/guides/)
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
@@ -29,21 +31,14 @@ If you want to build an _über-jar_, execute the following command:
 
 The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
 
-## Creating a native executable
+## Setting up the environment
+Create a .env file in project root. **DO NOT COMMIT THIS FILE TO THIS REPOSITORY** as it should be where we can store sensitive data like database passwords, api keys, etc... . For non-sensitive configuration properties, use `application.properties` or another configuration file. (See: [Quarkus - Configuring Your Application](https://quarkus.io/guides/config))
 
-You can create a native executable using: 
-```shell script
-./gradlew build -Dquarkus.package.type=native
+###### Example .env
+```env
+QUARKUS_MONGODB_CONNECTION_STRING=mongodb://localhost:27017
+MY_AWESOME_API_KEY=123456
 ```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./build/spira-backend-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
 
 ## Related guides
 
