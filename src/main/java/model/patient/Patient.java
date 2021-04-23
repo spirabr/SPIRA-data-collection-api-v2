@@ -2,15 +2,16 @@ package model.patient;
 
 
 import io.quarkus.mongodb.panache.MongoEntity;
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import io.smallrye.common.constraint.NotNull;
 import model.SampleType;
-import org.bson.codecs.pojo.annotations.BsonId;
 
 import javax.enterprise.inject.Model;
 import java.util.Map;
 
 @Model
 @MongoEntity(collection = "samples")
-public class Patient {
+public class Patient extends PanacheMongoEntity {
 
     /**
      * Patient ID should be a combination of colletor RGH + hospital since RGH-only is not unique
@@ -23,6 +24,11 @@ public class Patient {
      * DB should store only audio paths. The actual binary files are stored in the filesystem
      */
     private Map<SampleType, String> audios;
+
+    //TODO: Better validation
+    public Boolean validate() {
+        return this.collector != null && this.collector.getPatientRgh() != null && this.collector.getHospitalName() != null;
+    }
 
     public String getPatientId() {
         return patientId;

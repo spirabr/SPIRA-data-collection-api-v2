@@ -12,4 +12,8 @@ public class PatientRepository implements PanacheMongoRepository<Patient> {
     public List<Patient> fetchAllPatients() {
         return findAll().list();
     }
+
+    public void addPatient(Patient patient) {
+        persist(patient);
+    }
 }
