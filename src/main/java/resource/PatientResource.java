@@ -42,18 +42,30 @@ public class PatientResource {
 
     }
 
+    @GET
+    @Path("{hospital}/{rgh}")
+    public Response getPatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
+        Patient patient = findPatient(rgh, hospital);
+        return Response.status(Response.Status.OK)
+                .entity(patient)
+                .build();
+    }
+
     @DELETE
     @Transactional
     @Path("{hospital}/{rgh}")
     public Response deletePatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
-        Optional<Patient> optional = service.find("{ 'collector': { 'rgh' : ?1, 'hospital' : ?2 } }", rgh, hospital).firstResultOptional();
-        Patient patient = optional.orElse(null);
+        Patient patient = findPatient(rgh, hospital);
         if (patient == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("Patient not found")
                     .build();
         }
         patient.delete();
-        return Response.status(Response.Status.ACCEPTED).build();
+        return Response.status(Response.Status.OK).build();
+    }
+
+    private Patient findPatient(String rgh, String hospital) {
+        return service.find("{ 'collector.patientRgh' : ?1, 'collector.hospitalName' : ?2 } }", rgh, hospital).firstResult();
     }
 }

@@ -1,6 +1,7 @@
 package model.patient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.enterprise.inject.Model;
 import java.time.LocalDate;
@@ -8,11 +9,9 @@ import java.time.LocalDate;
 @Model
 public class CollectData {
 
-    @JsonProperty("rgh")
     private String patientRgh;
 
     // TODO: Check for a better way to identify hospital (maybe create an id?)
-    @JsonProperty("hospital")
     private String hospitalName;
 
     private LocalDate collectionDate;
