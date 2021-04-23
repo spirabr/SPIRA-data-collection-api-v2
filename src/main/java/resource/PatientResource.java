@@ -15,6 +15,8 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.*;
+
 @Path("/patient")
 @RequestScoped
 public class PatientResource {
@@ -33,10 +35,10 @@ public class PatientResource {
     public Response insertPatient(@Context Request request, Patient patient) {
         if (patient.validate()) {
             patient.persist();
-            return Response.status(Response.Status.CREATED)
+            return Response.status(CREATED)
                     .build();
         } else {
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(BAD_REQUEST)
                     .entity("Collector data is invalid")
                     .build();
         }
@@ -46,25 +48,23 @@ public class PatientResource {
     @PUT
     @Transactional
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Path("/audio/{hospital}/{rgh}")
-    public Response savePatientAudios(@Context Request request,
-                                      @MultipartForm AudioForm form,
-                                      @PathParam("hospital") String hospital,
-                                      @PathParam("rgh") String rgh) {
+    @Path("/{hospital}/{rgh}/audio")
+    public Response savePatientAudios(@Context Request request, @MultipartForm AudioForm form,
+                                      @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
         if (patient == null) {
             return notFound();
         }
 
         //TODO: persist audios to disk and update DB
-        return Response.status(Response.Status.OK).build();
+        return Response.status(OK).build();
     }
 
     @GET
     @Path("{hospital}/{rgh}")
     public Response getPatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
-        return Response.status(Response.Status.OK)
+        return Response.status(OK)
                 .entity(patient)
                 .build();
     }
@@ -78,7 +78,7 @@ public class PatientResource {
             return notFound();
         }
         patient.delete();
-        return Response.status(Response.Status.OK).build();
+        return Response.status(OK).build();
     }
 
     private Patient findPatient(String rgh, String hospital) {
@@ -86,7 +86,7 @@ public class PatientResource {
     }
 
     private Response notFound() {
-        return Response.status(Response.Status.NOT_FOUND)
+        return Response.status(NOT_FOUND)
                 .entity("Patient not found")
                 .build();
     }
