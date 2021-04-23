@@ -3,7 +3,6 @@ package model.patient;
 
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
-import io.smallrye.common.constraint.NotNull;
 import model.SampleType;
 
 import javax.enterprise.inject.Model;
