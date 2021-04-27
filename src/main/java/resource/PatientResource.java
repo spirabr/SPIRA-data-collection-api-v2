@@ -69,6 +69,7 @@ public class PatientResource {
             String audioFileName = patient.getAudioFileName(type);
             filesService.saveTo(audioFileName, data);
             patient.setAudio(type, filesService.getRootPath() + "/" + audioFileName);
+            patient.update();
         }
         return Response.status(OK).build();
     }
