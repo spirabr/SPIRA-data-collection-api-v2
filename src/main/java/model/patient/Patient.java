@@ -3,11 +3,13 @@ package model.patient;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import model.SampleType;
 
 import javax.enterprise.inject.Model;
+import java.util.HashMap;
 import java.util.Map;
 
 @Model
@@ -30,7 +32,13 @@ public class Patient extends PanacheMongoEntity {
     /**
      * DB should store only audio paths. The actual binary files are stored in the filesystem
      */
-    private Map<SampleType, String> audios;
+    private Map<String, String> audios;
+
+    public String getAudioFileName(SampleType type) {
+        return this.collector.getHospitalName() + "_"
+                + this.collector.getPatientRgh() + "_" +
+                type + ".wav";
+    }
 
     //TODO: Better validation
     public Boolean validate() {
@@ -53,11 +61,15 @@ public class Patient extends PanacheMongoEntity {
         this.collector = collector;
     }
 
-    public Map<SampleType, String> getAudios() {
+    public Map<String, String> getAudios() {
         return audios;
     }
 
-    public void setAudios(Map<SampleType, String> audios) {
-        this.audios = audios;
+    public void initAudios() {
+        this.audios = new HashMap<>();
+    }
+
+    public void setAudio(SampleType type, String audioPath) {
+        this.audios.put(type.toString(), audioPath);
     }
 }

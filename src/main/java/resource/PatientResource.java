@@ -1,7 +1,11 @@
 package resource;
 
+import model.SampleType;
+import model.audio.AudioForm;
 import model.patient.Patient;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import repository.PatientRepository;
+import service.FilesService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -11,19 +15,24 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
+import static javax.ws.rs.core.Response.Status.*;
 
 @Path("/patient")
 @RequestScoped
 public class PatientResource {
 
     @Inject
-    PatientRepository service;
+    PatientRepository dbService;
+
+    @Inject
+    FilesService filesService;
 
     @GET
     public List<Patient> allPatients() {
-        return service.fetchAllPatients();
+        return dbService.fetchAllPatients();
     }
 
     @POST
@@ -32,21 +41,44 @@ public class PatientResource {
     public Response insertPatient(@Context Request request, Patient patient) {
         if (patient.validate()) {
             patient.persist();
-            return Response.status(Response.Status.CREATED)
+            return Response.status(CREATED)
                     .build();
         } else {
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(BAD_REQUEST)
                     .entity("Collector data is invalid")
                     .build();
         }
 
     }
 
+    @PUT
+    @Transactional
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Path("/{hospital}/{rgh}/audio")
+    public Response savePatientAudios(@Context Request request, @MultipartForm AudioForm form,
+                                      @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) throws IOException {
+        Patient patient = findPatient(rgh, hospital);
+        if (patient == null) {
+            return notFound();
+        } else if (patient.getAudios() == null) {
+            patient.initAudios();
+        }
+
+        for (SampleType type : SampleType.values()) {
+            byte[] data = form.get(type);
+            String audioFileName = patient.getAudioFileName(type);
+            filesService.saveTo(audioFileName, data);
+            patient.setAudio(type, filesService.getRootPath() + "/" + audioFileName);
+            patient.update();
+        }
+        return Response.status(OK).build();
+    }
+
     @GET
     @Path("{hospital}/{rgh}")
     public Response getPatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
-        return Response.status(Response.Status.OK)
+        return Response.status(OK)
                 .entity(patient)
                 .build();
     }
@@ -57,15 +89,19 @@ public class PatientResource {
     public Response deletePatient(@Context Request request, @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
         if (patient == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Patient not found")
-                    .build();
+            return notFound();
         }
         patient.delete();
-        return Response.status(Response.Status.OK).build();
+        return Response.status(OK).build();
     }
 
     private Patient findPatient(String rgh, String hospital) {
-        return service.find("{ 'collector.patientRgh' : ?1, 'collector.hospitalName' : ?2 } }", rgh, hospital).firstResult();
+        return dbService.find("{ 'collector.patientRgh' : ?1, 'collector.hospitalName' : ?2 } }", rgh, hospital).firstResult();
+    }
+
+    private Response notFound() {
+        return Response.status(NOT_FOUND)
+                .entity("Patient not found")
+                .build();
     }
 }
