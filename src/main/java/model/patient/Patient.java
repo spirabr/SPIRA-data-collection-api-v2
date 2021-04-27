@@ -8,6 +8,7 @@ import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import model.SampleType;
 
 import javax.enterprise.inject.Model;
+import java.util.HashMap;
 import java.util.Map;
 
 @Model
@@ -31,6 +32,12 @@ public class Patient extends PanacheMongoEntity {
      * DB should store only audio paths. The actual binary files are stored in the filesystem
      */
     private Map<SampleType, String> audios;
+
+    public String getAudioFileName(SampleType type) {
+        return this.collector.getHospitalName() + "_"
+                + this.collector.getPatientRgh() + "_" +
+                type + ".wav";
+    }
 
     //TODO: Better validation
     public Boolean validate() {
@@ -57,7 +64,11 @@ public class Patient extends PanacheMongoEntity {
         return audios;
     }
 
-    public void setAudios(Map<SampleType, String> audios) {
-        this.audios = audios;
+    public void initAudios() {
+        this.audios = new HashMap<>();
+    }
+
+    public void setAudio(SampleType type, String audioPath) {
+        this.audios.put(type, audioPath);
     }
 }

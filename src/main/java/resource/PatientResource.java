@@ -1,9 +1,11 @@
 package resource;
 
+import model.SampleType;
 import model.audio.AudioForm;
 import model.patient.Patient;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import repository.PatientRepository;
+import service.FilesService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.*;
@@ -22,11 +25,14 @@ import static javax.ws.rs.core.Response.Status.*;
 public class PatientResource {
 
     @Inject
-    PatientRepository service;
+    PatientRepository dbService;
+
+    @Inject
+    FilesService filesService;
 
     @GET
     public List<Patient> allPatients() {
-        return service.fetchAllPatients();
+        return dbService.fetchAllPatients();
     }
 
     @POST
@@ -50,13 +56,20 @@ public class PatientResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/{hospital}/{rgh}/audio")
     public Response savePatientAudios(@Context Request request, @MultipartForm AudioForm form,
-                                      @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
+                                      @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) throws IOException {
         Patient patient = findPatient(rgh, hospital);
         if (patient == null) {
             return notFound();
+        } else if (patient.getAudios() == null) {
+            patient.initAudios();
         }
 
-        //TODO: persist audios to disk and update DB
+        for (SampleType type : SampleType.values()) {
+            byte[] data = form.get(type);
+            String audioFileName = patient.getAudioFileName(type);
+            filesService.saveTo(audioFileName, data);
+            patient.setAudio(type, filesService.getRootPath() + "/" + audioFileName);
+        }
         return Response.status(OK).build();
     }
 
@@ -82,7 +95,7 @@ public class PatientResource {
     }
 
     private Patient findPatient(String rgh, String hospital) {
-        return service.find("{ 'collector.patientRgh' : ?1, 'collector.hospitalName' : ?2 } }", rgh, hospital).firstResult();
+        return dbService.find("{ 'collector.patientRgh' : ?1, 'collector.hospitalName' : ?2 } }", rgh, hospital).firstResult();
     }
 
     private Response notFound() {

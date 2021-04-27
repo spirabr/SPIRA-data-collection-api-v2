@@ -1,5 +1,6 @@
 package model.audio;
 
+import model.SampleType;
 import org.jboss.resteasy.annotations.Form;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
@@ -23,6 +24,16 @@ public class AudioForm {
     @FormParam("frase")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     private byte[] fraseData;
+
+    public byte[] get(SampleType type) {
+        switch (type) {
+            case ACEITE: return getAceiteData();
+            case SUSTENTADA: return getSustentadaData();
+            case PARLENDA: return getParlendaData();
+            case FRASE: return getFraseData();
+        }
+        return null;
+    }
 
     public byte[] getAceiteData() {
         return aceiteData;
