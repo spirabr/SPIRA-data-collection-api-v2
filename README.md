@@ -34,8 +34,15 @@ The application is now runnable using `java -jar build/quarkus-app/quarkus-run.j
 ## Setting up the environment
 Create a .env file in project root. **DO NOT COMMIT THIS FILE TO THIS REPOSITORY** as it should be where we can store sensitive data like database passwords, api keys, etc... . For non-sensitive configuration properties, use `application.properties` or another configuration file. (See: [Quarkus - Configuring Your Application](https://quarkus.io/guides/config))
 
+#### Environment variables
+* `QUARKUS_MONGODB_CONNECTION_STRING`: **(Required)** Mongo connection URL
+* `QUARKUS_MONGODB_DATABASE`: **(Required)** DB name
+* `QUARKUS_HTTP_PORT`: *(Optional)* HTTP port for the connection. Defaults to 8080
+* `AUIDOS_ROOT_PATH`: *(Optional)* Path where audios will be saved on filesystem. Defaults to `/tmp/spira-audios`.
+It's _highly recommended_ to set this variable for production since default path is a temporary folder.
+
 ###### Example .env
-```env
+```dotenv
 QUARKUS_MONGODB_CONNECTION_STRING=mongodb://localhost:27017
 MY_AWESOME_API_KEY=123456
 ```
