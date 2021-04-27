@@ -15,7 +15,7 @@ public class FilesService {
     private final String rootPath;
 
     public FilesService() {
-        this.rootPath = Optional.ofNullable(System.getenv("AUDIOS_ROOT_PATH")).orElse("/tmp");
+        this.rootPath = Optional.ofNullable(System.getenv("AUDIOS_ROOT_PATH")).orElse("/tmp/spira-audios");
     }
 
     public void saveTo(String fileName, byte[] data) throws IOException {
