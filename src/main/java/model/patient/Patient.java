@@ -3,7 +3,6 @@ package model.patient;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import model.SampleType;
@@ -12,6 +11,11 @@ import javax.enterprise.inject.Model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Model containing all data collected for each sample.
+ * Here we store all sample metadata such as mobile phone model(?) and browser used.
+ * Relevant data for ML models (besides audio binary data) is stored on collector attribute
+ */
 @Model
 @MongoEntity(collection = "samples")
 public class Patient extends PanacheMongoEntity {

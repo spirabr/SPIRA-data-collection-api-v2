@@ -1,11 +1,11 @@
 package model.patient;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import javax.enterprise.inject.Model;
 import java.time.LocalDate;
 
+/**
+ * Model containing relevant data for ML models (besides audio binary data)
+ */
 @Model
 public class CollectData {
 
