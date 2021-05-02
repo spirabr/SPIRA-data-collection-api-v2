@@ -1,6 +1,7 @@
 package service;
 
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.io.File;
@@ -11,13 +12,14 @@ import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 @RequestScoped
 public class FilesService {
 
-    private final String rootPath;
+    private String rootPath;
 
     @Inject
-    ConfigService config;
+    ConfigService configService;
 
-    public FilesService() {
-        this.rootPath = config.getAudiosPath();
+    @PostConstruct
+    void init() {
+        this.rootPath = configService.getAudiosPath();
     }
 
     public void saveTo(String fileName, byte[] data) throws IOException {
