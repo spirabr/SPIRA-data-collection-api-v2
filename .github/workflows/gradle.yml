@@ -27,5 +27,3 @@ jobs:
             git stash
             git pull origin main
             ./gradlew clean build
-            sudo cp build/quarkus-app/* /opt/spira-backend/
-            sudo systemctl restart spira-backend
