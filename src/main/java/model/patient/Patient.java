@@ -8,6 +8,7 @@ import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import model.SampleType;
 
 import javax.enterprise.inject.Model;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class Patient extends PanacheMongoEntity {
 
     @JsonCreator
     public Patient(@JsonProperty("collector") CollectData collector) {
+        this.timestamp = Instant.now().toEpochMilli();
         this.collector = collector;
         this.patientId = this.collector.getHospitalName() + "_" + this.collector.getPatientRgh();
     }
@@ -33,13 +35,15 @@ public class Patient extends PanacheMongoEntity {
 
     private CollectData collector;
 
+    private Long timestamp;
+
     /**
      * DB should store only audio paths. The actual binary files are stored in the filesystem
      */
     private Map<String, String> audios;
 
     public String getAudioFileName(SampleType type) {
-        return this.collector.getHospitalName() + "_"
+        return this.timestamp + "_" + this.collector.getHospitalName() + "_"
                 + this.collector.getPatientRgh() + "_" +
                 type + ".wav";
     }
@@ -63,6 +67,14 @@ public class Patient extends PanacheMongoEntity {
 
     public void setCollector(CollectData collector) {
         this.collector = collector;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Map<String, String> getAudios() {
