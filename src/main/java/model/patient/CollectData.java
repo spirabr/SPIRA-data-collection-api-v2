@@ -1,7 +1,8 @@
 package model.patient;
 
 import javax.enterprise.inject.Model;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Model containing relevant data for ML models (besides audio binary data)
@@ -14,7 +15,7 @@ public class CollectData {
     // TODO: Check for a better way to identify hospital (maybe create an id?)
     private String hospitalName;
 
-    private LocalDate collectionDate;
+    private LocalDateTime collectionDate;
 
     public String getHospitalName() {
         return hospitalName;
@@ -30,5 +31,17 @@ public class CollectData {
 
     public void setPatientRgh(String patientRgh) {
         this.patientRgh = patientRgh;
+    }
+
+    public LocalDateTime getCollectionDate() {
+        return collectionDate;
+    }
+
+    public void setCollectionDate(LocalDateTime collectionDate) {
+        this.collectionDate = collectionDate;
+    }
+
+    public String getFormattedDateTime() {
+        return this.collectionDate.format(DateTimeFormatter.ISO_DATE_TIME);
     }
 }

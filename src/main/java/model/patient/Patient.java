@@ -9,6 +9,8 @@ import model.SampleType;
 
 import javax.enterprise.inject.Model;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +25,10 @@ public class Patient extends PanacheMongoEntity {
 
     @JsonCreator
     public Patient(@JsonProperty("collector") CollectData collector) {
-        this.timestamp = Instant.now().toEpochMilli();
+        Instant now = Instant.now();
+        this.timestamp = now.toEpochMilli();
         this.collector = collector;
+        this.collector.setCollectionDate(LocalDateTime.ofInstant(now, ZoneId.systemDefault()));
         this.patientId = this.collector.getHospitalName() + "_" + this.collector.getPatientRgh();
     }
 
@@ -43,7 +47,7 @@ public class Patient extends PanacheMongoEntity {
     private Map<String, String> audios;
 
     public String getAudioFileName(SampleType type) {
-        return this.timestamp + "_" + this.collector.getHospitalName() + "_"
+        return this.collector.getFormattedDateTime() + "_" + this.collector.getHospitalName() + "_"
                 + this.collector.getPatientRgh() + "_" +
                 type + ".wav";
     }
