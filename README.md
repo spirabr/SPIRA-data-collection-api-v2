@@ -32,7 +32,7 @@ If you want to build an _über-jar_, execute the following command:
 The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
 
 ## Setting up the environment
-Create a .env file in project root. **DO NOT COMMIT THIS FILE TO THIS REPOSITORY** as it should be where we can store sensitive data like database passwords, api keys, etc... . For non-sensitive configuration properties, use `application.properties` or another configuration file. (See: [Quarkus - Configuring Your Application](https://quarkus.io/guides/config))
+Create a .env file in project root. **DO NOT COMMIT THIS FILE TO THIS REPOSITORY** as it should be where we can store sensitive data like database passwords, api keys, etc... . For non-sensitive configuration properties, use `application.properties` or another configuration file. (*See [3]*)
 
 #### Environment variables
 * `QUARKUS_MONGODB_CONNECTION_STRING`: **(Required)** Mongo connection URL
@@ -51,4 +51,5 @@ MY_AWESOME_API_KEY=123456
 
 - [1] RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
 - [2] [What is an uber-jar](https://stackoverflow.com/questions/11947037/what-is-an-uber-jar)?
+- [3] [Quarkus - Configuring Your Application](https://quarkus.io/guides/config)
 
