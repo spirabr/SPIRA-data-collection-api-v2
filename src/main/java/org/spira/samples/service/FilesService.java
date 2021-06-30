@@ -1,4 +1,4 @@
-package service;
+package org.spira.samples.service;
 
 
 import javax.annotation.PostConstruct;

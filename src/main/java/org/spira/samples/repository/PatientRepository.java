@@ -1,7 +1,7 @@
-package repository;
+package org.spira.samples.repository;
 
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
-import model.patient.Patient;
+import org.spira.samples.model.patient.Patient;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;

@@ -1,4 +1,4 @@
-package service;
+package org.spira.samples.service;
 
 import io.quarkus.runtime.Startup;
 import org.eclipse.microprofile.config.Config;

@@ -1,11 +1,11 @@
-package model.patient;
+package org.spira.samples.model.patient;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
-import model.SampleType;
+import org.spira.samples.model.SampleType;
 
 import javax.enterprise.inject.Model;
 import java.time.Instant;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * Model containing all data collected for each sample.
- * Here we store all sample metadata such as mobile phone model(?) and browser used.
+ * Here we store all sample metadata such as mobile phone org.spira.samples.model(?) and browser used.
  * Relevant data for ML models (besides audio binary data) is stored on collector attribute
  */
 @Model

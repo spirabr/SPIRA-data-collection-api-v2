@@ -1,11 +1,11 @@
-package resource;
+package org.spira.samples.resource;
 
-import model.SampleType;
-import model.audio.AudioForm;
-import model.patient.Patient;
+import org.spira.samples.model.SampleType;
+import org.spira.samples.model.audio.AudioForm;
+import org.spira.samples.model.patient.Patient;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-import repository.PatientRepository;
-import service.FilesService;
+import org.spira.samples.repository.PatientRepository;
+import org.spira.samples.service.FilesService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

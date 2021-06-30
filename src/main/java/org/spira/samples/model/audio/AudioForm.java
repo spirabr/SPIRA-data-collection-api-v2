@@ -1,7 +1,6 @@
-package model.audio;
+package org.spira.samples.model.audio;
 
-import model.SampleType;
-import org.jboss.resteasy.annotations.Form;
+import org.spira.samples.model.SampleType;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import javax.ws.rs.FormParam;
