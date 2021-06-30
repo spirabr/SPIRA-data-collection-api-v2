@@ -5,7 +5,7 @@ import org.spira.samples.model.audio.AudioForm;
 import org.spira.samples.model.patient.Patient;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.spira.samples.repository.PatientRepository;
-import org.spira.samples.service.FilesService;
+import org.spira.common.service.FilesService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
