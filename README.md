@@ -22,7 +22,7 @@ The application can be packaged using:
 ./gradlew build
 ```
 It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+Be aware that it’s not an _über-jar_(*See [2]*) as the dependencies are copied into the `build/quarkus-app/lib/` directory.
 
 If you want to build an _über-jar_, execute the following command:
 ```shell script
@@ -47,7 +47,8 @@ QUARKUS_MONGODB_CONNECTION_STRING=mongodb://localhost:27017
 MY_AWESOME_API_KEY=123456
 ```
 
-## Related guides
+## Related links
 
-- RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
+- [1] RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
+- [2] [What is an uber-jar](https://stackoverflow.com/questions/11947037/what-is-an-uber-jar)?
 
