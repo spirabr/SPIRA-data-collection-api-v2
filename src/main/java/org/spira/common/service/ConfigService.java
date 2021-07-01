@@ -30,4 +30,8 @@ public class ConfigService {
                     return DEFAULT_PATH;
                 });
     }
+
+    public boolean isAudioPathDefault() {
+        return this.getAudiosPath().equals(DEFAULT_PATH);
+    }
 }

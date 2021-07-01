@@ -33,6 +33,18 @@ public class FilesService {
     }
 
     public void saveTo(String fileName, byte[] data) throws IOException {
+        StringBuilder sb = new StringBuilder("Salvando arquivo: ");
+        sb
+                .append(fileName)
+                .append(" no caminho: ")
+                .append(this.rootPath);
+
+        if (configService.isAudioPathDefault()) {
+            sb.append(" (CUIDADO: CAMINHO PADRAO)");
+            LOGGER.warn(sb.toString());
+        } else {
+            LOGGER.info(sb.toString());
+        }
         String fullPath = rootPath + "/" + fileName;
         writeByteArrayToFile(new File(fullPath), data);
     }
