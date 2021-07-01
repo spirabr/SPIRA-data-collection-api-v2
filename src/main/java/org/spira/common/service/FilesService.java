@@ -1,6 +1,8 @@
 package org.spira.common.service;
 
 
+import org.jboss.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -9,7 +11,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,8 @@ import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 
 @RequestScoped
 public class FilesService {
+
+    private static final Logger LOGGER = Logger.getLogger(FilesService.class);
 
     private String rootPath;
 
@@ -41,9 +44,9 @@ public class FilesService {
                     .collect(Collectors.toList());
         } catch (IOException e) {
             if (e instanceof NoSuchFileException) {
-                System.out.println("Folder not found");
+                LOGGER.warn("Folder not found: " + directory);
             } else {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
             return Collections.emptyList();
         }

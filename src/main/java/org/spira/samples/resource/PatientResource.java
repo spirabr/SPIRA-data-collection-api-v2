@@ -1,5 +1,6 @@
 package org.spira.samples.resource;
 
+import org.jboss.logging.Logger;
 import org.spira.samples.model.SampleType;
 import org.spira.samples.model.audio.AudioForm;
 import org.spira.samples.model.patient.Patient;
@@ -24,6 +25,8 @@ import static javax.ws.rs.core.Response.Status.*;
 @RequestScoped
 public class PatientResource {
 
+    private static final Logger LOGGER = Logger.getLogger(PatientResource.class);
+
     @Inject
     PatientRepository dbService;
 
@@ -41,9 +44,11 @@ public class PatientResource {
     public Response insertPatient(@Context Request request, Patient patient) {
         if (patient.validate()) {
             patient.persist();
+            LOGGER.info("Patient data saved successfully");
             return Response.status(CREATED)
                     .build();
         } else {
+            LOGGER.error("Error saving patient data");
             return Response.status(BAD_REQUEST)
                     .entity("Collector data is invalid")
                     .build();
@@ -100,8 +105,10 @@ public class PatientResource {
     }
 
     private Response notFound() {
+        String message = "Patient not found";
+        LOGGER.warn(message);
         return Response.status(NOT_FOUND)
-                .entity("Patient not found")
+                .entity(message)
                 .build();
     }
 }
