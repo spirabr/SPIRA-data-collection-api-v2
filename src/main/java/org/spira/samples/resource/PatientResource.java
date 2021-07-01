@@ -23,6 +23,7 @@ import static javax.ws.rs.core.Response.Status.*;
 
 @Path("/patient")
 @RequestScoped
+@Produces(MediaType.APPLICATION_JSON)
 public class PatientResource {
 
     private static final Logger LOGGER = Logger.getLogger(PatientResource.class);
@@ -61,7 +62,7 @@ public class PatientResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/{hospital}/{rgh}/audio")
     public Response savePatientAudios(@Context Request request, @MultipartForm AudioForm form,
-                                      @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) throws IOException {
+                                      @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
         if (patient == null) {
             return notFound();
@@ -69,14 +70,22 @@ public class PatientResource {
             patient.initAudios();
         }
 
-        for (SampleType type : SampleType.values()) {
-            byte[] data = form.get(type);
-            String audioFileName = patient.getAudioFileName(type);
-            filesService.saveTo(audioFileName, data);
-            patient.setAudio(type, filesService.getRootPath() + "/" + audioFileName);
-            patient.update();
+        try {
+            for (SampleType type : SampleType.values()) {
+                byte[] data = form.get(type);
+                String audioFileName = patient.getAudioFileName(type);
+                filesService.saveTo(audioFileName, data);
+                patient.setAudio(type, filesService.getRootPath() + "/" + audioFileName);
+                patient.update();
+                LOGGER.info("Audio: " + audioFileName + " salvo com sucesso");
+            }
+            return Response.status(OK).build();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return Response.status(INTERNAL_SERVER_ERROR)
+                    .entity("Audios nao foram salvos")
+                    .build();
         }
-        return Response.status(OK).build();
     }
 
     @GET
