@@ -60,7 +60,7 @@ public class PatientResource {
     @PUT
     @Transactional
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Path("/{hospital}/{rgh}/audio")
+    @Path("{hospital}/{rgh}/audio")
     public Response savePatientAudios(@Context Request request, @MultipartForm AudioForm form,
                                       @PathParam("hospital") String hospital, @PathParam("rgh") String rgh) {
         Patient patient = findPatient(rgh, hospital);
