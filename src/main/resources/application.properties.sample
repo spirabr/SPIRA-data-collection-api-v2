@@ -1,3 +1,9 @@
 quarkus.http.limits.max-body-size=51200K
 spira.audios.path=/tmp/spira-audios
 quarkus.http.insecure-requests=enabled
+
+# Log related configs
+quarkus.log.file.enable=true
+quarkus.log.file.path=/some/awesome/path/to/file.log
+quarkus.log.file.async=true
+quarkus.log.file.rotation.max-file-size=100M
