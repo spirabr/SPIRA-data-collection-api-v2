@@ -3,6 +3,7 @@ package org.spira.common.service;
 import io.quarkus.runtime.Startup;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;
@@ -11,6 +12,9 @@ import java.util.Optional;
 @ApplicationScoped
 public class ConfigService {
 
+    private static final Logger LOGGER = Logger.getLogger(ConfigService.class);
+    private static final String DEFAULT_PATH = "/tmp/spira-audios";
+
     private Config config;
 
     public ConfigService() {
@@ -18,9 +22,12 @@ public class ConfigService {
     }
 
     public String getAudiosPath() {
-        Optional<String> maybeAudiosPath = config
+        return config
                 .getOptionalValue("spira.audios.path", String.class)
-                .or(() -> config.getOptionalValue("SPIRA_AUDIOS_PATH", String.class));
-        return maybeAudiosPath.orElse("/tmp/spira-audios");
+                .or(() -> config.getOptionalValue("SPIRA_AUDIOS_PATH", String.class))
+                .orElseGet(() -> {
+                    LOGGER.warn("Audios path not configured! Using default path: " + DEFAULT_PATH + " , which can cause data loss");
+                    return DEFAULT_PATH;
+                });
     }
 }
