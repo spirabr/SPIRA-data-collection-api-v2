@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import org.jboss.logging.Logger;
 import org.spira.samples.model.SampleType;
 
 import javax.enterprise.inject.Model;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Model containing all data collected for each sample.
@@ -22,6 +24,8 @@ import java.util.Map;
 @Model
 @MongoEntity(collection = "samples")
 public class Patient extends PanacheMongoEntity {
+
+    private static Logger LOGGER = Logger.getLogger(Patient.class);
 
     @JsonCreator
     public Patient(@JsonProperty("collector") CollectData collector) {
@@ -40,6 +44,13 @@ public class Patient extends PanacheMongoEntity {
     private CollectData collector;
 
     private Long timestamp;
+
+    /**
+     * Indicates if patient has had covid before
+     */
+    private Boolean hadCovid;
+
+    private MaskType maskType;
 
     /**
      * DB should store only audio paths. The actual binary files are stored in the filesystem
@@ -91,5 +102,30 @@ public class Patient extends PanacheMongoEntity {
 
     public void setAudio(SampleType type, String audioPath) {
         this.audios.put(type.toString(), audioPath);
+    }
+
+    public Boolean getHadCovid() {
+        return hadCovid;
+    }
+
+    public void setHadCovid(Boolean hadCovid) {
+        this.hadCovid = hadCovid;
+    }
+
+    public MaskType getMaskType() {
+        return maskType;
+    }
+
+    public void setMaskType(MaskType maskType) {
+        this.maskType = maskType;
+    }
+
+    public void setMaskType(String type) {
+        Optional<MaskType> maybeType = MaskType.fromString(type);
+        if (maybeType.isPresent()) {
+            this.maskType = maybeType.get();
+        } else {
+            LOGGER.warn("Invalid mask type: " + type + ". Ignoring");
+        }
     }
 }
