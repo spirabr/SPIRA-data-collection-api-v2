@@ -17,6 +17,10 @@ public class CollectData {
 
     private LocalDateTime collectionDate;
 
+    private MaskType maskType;
+
+    private CovidStatus covidStatus;
+
     public String getHospitalName() {
         return hospitalName;
     }
@@ -43,5 +47,21 @@ public class CollectData {
 
     public String getFormattedDateTime() {
         return this.collectionDate.format(DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    public MaskType getMaskType() {
+        return maskType;
+    }
+
+    public void setMaskType(MaskType maskType) {
+        this.maskType = maskType;
+    }
+
+    public CovidStatus getCovidStatus() {
+        return covidStatus;
+    }
+
+    public void setCovidStatus(CovidStatus covidStatus) {
+        this.covidStatus = covidStatus;
     }
 }

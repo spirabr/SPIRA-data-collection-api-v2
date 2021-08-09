@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Model containing all data collected for each sample.
@@ -44,13 +43,6 @@ public class Patient extends PanacheMongoEntity {
     private CollectData collector;
 
     private Long timestamp;
-
-    /**
-     * Indicates if patient has had covid before
-     */
-    private Boolean hadCovid;
-
-    private MaskType maskType;
 
     /**
      * DB should store only audio paths. The actual binary files are stored in the filesystem
@@ -104,28 +96,4 @@ public class Patient extends PanacheMongoEntity {
         this.audios.put(type.toString(), audioPath);
     }
 
-    public Boolean getHadCovid() {
-        return hadCovid;
-    }
-
-    public void setHadCovid(Boolean hadCovid) {
-        this.hadCovid = hadCovid;
-    }
-
-    public MaskType getMaskType() {
-        return maskType;
-    }
-
-    public void setMaskType(MaskType maskType) {
-        this.maskType = maskType;
-    }
-
-    public void setMaskType(String type) {
-        Optional<MaskType> maybeType = MaskType.fromString(type);
-        if (maybeType.isPresent()) {
-            this.maskType = maybeType.get();
-        } else {
-            LOGGER.warn("Invalid mask type: " + type + ". Ignoring");
-        }
-    }
 }
