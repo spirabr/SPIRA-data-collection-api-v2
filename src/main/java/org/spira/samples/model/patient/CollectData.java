@@ -21,6 +21,10 @@ public class CollectData {
 
     private CovidStatus covidStatus;
 
+    private Double saturacaoOxigenio;
+
+    private Integer bpm;
+
     public String getHospitalName() {
         return hospitalName;
     }
@@ -63,5 +67,21 @@ public class CollectData {
 
     public void setCovidStatus(CovidStatus covidStatus) {
         this.covidStatus = covidStatus;
+    }
+
+    public Double getSaturacaoOxigenio() {
+        return saturacaoOxigenio;
+    }
+
+    public void setSaturacaoOxigenio(Double saturacaoOxigenio) {
+        this.saturacaoOxigenio = saturacaoOxigenio;
+    }
+
+    public Integer getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(Integer bpm) {
+        this.bpm = bpm;
     }
 }
