@@ -12,6 +12,18 @@ public class CollectData {
 
     private String patientRgh;
 
+    private String sampleType;
+
+    private String gender;
+
+    private Integer age;
+
+    private RespiratoryInsufficiencySituation respiratoryInsufficiencySituation;
+
+    private String CID;
+
+    private Integer respiratoryFrequency;
+
     // TODO: Check for a better way to identify hospital (maybe create an id?)
     private String hospitalName;
 
@@ -19,7 +31,7 @@ public class CollectData {
 
     private MaskType maskType;
 
-    private CovidStatus covidStatus;
+    private CovidSituation covidSituation;
 
     private Double saturacaoOxigenio;
 
@@ -61,14 +73,6 @@ public class CollectData {
         this.maskType = maskType;
     }
 
-    public CovidStatus getCovidStatus() {
-        return covidStatus;
-    }
-
-    public void setCovidStatus(CovidStatus covidStatus) {
-        this.covidStatus = covidStatus;
-    }
-
     public Double getSaturacaoOxigenio() {
         return saturacaoOxigenio;
     }
@@ -83,5 +87,61 @@ public class CollectData {
 
     public void setBpm(Integer bpm) {
         this.bpm = bpm;
+    }
+
+    public CovidSituation getCovidSituation() {
+        return covidSituation;
+    }
+
+    public void setCovidSituation(CovidSituation covidSituation) {
+        this.covidSituation = covidSituation;
+    }
+
+    public String getSampleType() {
+        return sampleType;
+    }
+
+    public void setSampleType(String sampleType) {
+        this.sampleType = sampleType;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public RespiratoryInsufficiencySituation getRespiratoryInsufficiencySituation() {
+        return respiratoryInsufficiencySituation;
+    }
+
+    public void setRespiratoryInsufficiencySituation(RespiratoryInsufficiencySituation respiratoryInsufficiencySituation) {
+        this.respiratoryInsufficiencySituation = respiratoryInsufficiencySituation;
+    }
+
+    public String getCID() {
+        return CID;
+    }
+
+    public void setCID(String CID) {
+        this.CID = CID;
+    }
+
+    public Integer getRespiratoryFrequency() {
+        return respiratoryFrequency;
+    }
+
+    public void setRespiratoryFrequency(Integer respiratoryFrequency) {
+        this.respiratoryFrequency = respiratoryFrequency;
     }
 }
