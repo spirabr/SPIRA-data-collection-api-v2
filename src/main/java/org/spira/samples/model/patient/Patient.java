@@ -7,6 +7,7 @@ import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import org.jboss.logging.Logger;
 import org.spira.samples.model.SampleType;
+import org.spira.samples.model.patient.formData.CollectData;
 
 import javax.enterprise.inject.Model;
 import java.time.Instant;

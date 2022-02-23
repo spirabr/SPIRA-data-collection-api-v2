@@ -1,16 +1,16 @@
-package org.spira.samples.model.patient;
+package org.spira.samples.model.patient.formData;
 
 public class RespiratoryInsufficiencySituation {
 
-    private RespiratoryInsufficiencyStatus respiratoryInsufficiencyStatus;
+    private Boolean respiratoryInsufficiencyStatus;
 
     private String location;
 
-    public RespiratoryInsufficiencyStatus getRespiratoryInsufficiencyStatus() {
+    public Boolean getRespiratoryInsufficiencyStatus() {
         return respiratoryInsufficiencyStatus;
     }
 
-    public void setRespiratoryInsufficiencyStatus(RespiratoryInsufficiencyStatus respiratoryInsufficiencyStatus) {
+    public void setRespiratoryInsufficiencyStatus(Boolean respiratoryInsufficiencyStatus) {
         this.respiratoryInsufficiencyStatus = respiratoryInsufficiencyStatus;
     }
 

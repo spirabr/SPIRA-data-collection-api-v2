@@ -1,9 +1,9 @@
-package org.spira.samples.model.patient;
+package org.spira.samples.model.patient.formData;
 
 import java.util.Optional;
 
 public enum InternedLocation {
-    NURSERY, ICU;
+    NURSERY, ICU, NULL;
 
     public static Optional<InternedLocation> fromString(String string) {
         for (InternedLocation type: values()) {

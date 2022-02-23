@@ -1,4 +1,4 @@
-package org.spira.samples.model.patient;
+package org.spira.samples.model.patient.formData;
 
 import javax.enterprise.inject.Model;
 import java.time.LocalDateTime;

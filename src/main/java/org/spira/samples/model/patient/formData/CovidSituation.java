@@ -1,4 +1,4 @@
-package org.spira.samples.model.patient;
+package org.spira.samples.model.patient.formData;
 
 import java.util.Date;
 
